@@ -42,7 +42,6 @@ def pilot_nationality_detail(nationality):
                                             8:'Austrian', 9:'Magyar (Hungarian)', 10:'Bosnian',
                                             11:'Slovene', 12:'Czech'}}
 
-
     roll_1 = int(random.uniform(1,7))+int(random.uniform(1,7))
     if nationality.lower() == 'american':
         return nationality_table[nationality][roll_1][int(random.uniform(0,6))]
@@ -56,9 +55,23 @@ def pilot_nationality_detail(nationality):
     else:
         return nationality_table[nationality][roll_1]
 
+def pilot_rank(nationality):
+    ranks = {'french':{1:'Sergent', 2:'Adjudant', 3:'Sous-Lieutenant', 4:'Sous-Lieutenant', 5:'Lieutenant', 6:'Lieutenant'},
+             'belgin':{1:'Sergent', 2:'Adjudant', 3:'Sous-Lieutenant', 4:'Sous-Lieutenant', 5:'Lieutenant', 6:'Lieutenant'},
+             'american':{1:'2nd Lieutenant', 2:'2nd Lieutenant', 3:'Lieutenant', 4:'Lieutenant', 5:'Lieutenant', 6:'Lieutenant'},
+             'italian':{1:'Sergente', 2:'Sergente', 3:'Sottotenente', 4:'Sottotenente', 5:'Tenente', 6:'Tenente'},
+             'british':{1:'2nd Lieutenant', 2:'2nd Lieutenant', 3:'Lieutenant', 4:'Lieutenant', 5:'Lieutenant', 6:'Captian'},
+             'austro-hungarian':{1:'Feldwebel', 2:'Feldwebel', 3:'Feldwebel', 4:'Leutnant', 5:'Leutnant', 6:'Leutnant'},
+             'german':{1:'Unteroffizier', 2:'Vizefeldwebel', 3:'Vizefeldwebel', 4:'Leutnant', 5:'Leutnant', 6:'Leutnant',}}
+    return ranks[nationality][int(random.uniform(1,7))]
+
+
+
+
 def main():
     nationality = input('What nationality?:')
     print('Your pilot nationality is ' + pilot_nationality_detail(nationality.lower()) + '.')
+    print('Your pilot rank is ' + pilot_rank(nationality.lower()) + '.')
 
 
 
