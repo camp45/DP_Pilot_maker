@@ -44,16 +44,16 @@ def pilot_nationality_detail(nationality):
 
     roll_1 = int(random.uniform(1, 7))+int(random.uniform(1, 7))
     if nationality.lower() == 'american':
-        return nationality_table[nationality][roll_1][int(random.uniform(0,6))]
+        return nationality_table[nationality.lower()][roll_1][int(random.uniform(0,6))]
 
     elif nationality.lower() == 'french':
 
         if roll_1 == 12:
-            return nationality_table[nationality][roll_1][int(random.uniform(1,7))]
+            return nationality_table[nationality.lower()][roll_1][int(random.uniform(1,7))]
         else:
-            return nationality_table[nationality][roll_1]
+            return nationality_table[nationality.lower()][roll_1]
     else:
-        return nationality_table[nationality][roll_1]
+        return nationality_table[nationality.lower()][roll_1]
 
 
 def pilot_rank(nationality):
@@ -64,12 +64,14 @@ def pilot_rank(nationality):
              'british':{1:'2nd Lieutenant', 2:'2nd Lieutenant', 3:'Lieutenant', 4:'Lieutenant', 5:'Lieutenant', 6:'Captian'},
              'austro-hungarian':{1:'Feldwebel', 2:'Feldwebel', 3:'Feldwebel', 4:'Leutnant', 5:'Leutnant', 6:'Leutnant'},
              'german':{1:'Unteroffizier', 2:'Vizefeldwebel', 3:'Vizefeldwebel', 4:'Leutnant', 5:'Leutnant', 6:'Leutnant',}}
-    return ranks[nationality][int(random.uniform(1,7))]
+    return ranks[nationality.lower()][int(random.uniform(1,7))]
 
 
 def pilot_name(nationality):
     nationality_conversion = {'american': 'en', 'belgin': 'nl-be', 'british': 'en-gb', 'italian': 'it',
-                              'german': 'de', 'french': 'fr', ''}
+                              'french': 'fr', 'german': 'de', 'austro-hungarian': 'de-at'}
+    nat = nationality_conversion[nationality.lower()]
+    return mimesis.Personal(nat).full_name(gender='male')
 
 
 
@@ -77,23 +79,24 @@ def main():
     print('Welcome to Dawn Patrol Pilot Roller.\n')
     while True:
         print('Menu'.center(20,'-'))
-        main_menu = ['Fetch Squadren', 'Save Squadren', 'Roll New Squadren', 'Roll Single Pilot', 'Show Current Squadren', 'Exit']
+        main_menu = ['Fetch Squadron', 'Save Squadron', 'Roll New Squadron', 'Roll Single Pilot',
+                     'Show Current Squadron', 'Exit']
         for i in main_menu:
             print('[' + str(main_menu.index(i)+1) + ']' + i)
         user_input = input('Command:')
         if user_input.isalnum():
             if user_input.lower() == main_menu[0].lower() or user_input == '1':
-                print('Fetching Squadren', end='\n\n')
+                print('Fetching Squadron', end='\n\n')
             elif user_input.lower() == main_menu[1].lower() or user_input == '2':
-                print('Saving Squadren', end='\n\n')
+                print('Saving Squadron', end='\n\n')
             elif user_input.lower() == main_menu[2] or user_input == '3':
-                print('Rolling New Squadren', end='\n\n')
+                print('Rolling New Squadron', end='\n\n')
             elif user_input.lower() == main_menu[3] or user_input == '4':
                 print('Rolling Single Pilot', end='\n\n')
                 nat = input('Pilot Nationality?:')
-                print('Pilot ' + pilot_rank(nat) + ' ' + pilot_nationality_detail(nat) + '.')
+                print(pilot_rank(nat) + ' ' + pilot_name(nat) + ' ' + 'from ' + pilot_nationality_detail(nat))
             elif user_input.lower() == main_menu[4] or user_input == '5':
-                print('Showing Current Squadren', end='\n\n')
+                print('Showing Current Squadron', end='\n\n')
             elif user_input.lower() == main_menu[5] or user_input == '6':
                 print('Exiting', end='\n\n')
                 exit()
