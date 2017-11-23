@@ -103,3 +103,6 @@ ENV/
 
 #Pycharm Stuff
 .idea/
+
+#Credentials
+credentials/
