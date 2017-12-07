@@ -22,8 +22,17 @@ class Pilot(object):
         self.missions = pilot_log['Missions']
         self.kills = pilot_log['Kills']
         self.date_created = pilot_log['Date Created']
-        self.date_reprted_killed = pilot_log['Date Reported Killed']
+        self.date_reported_killed = pilot_log['Date Reported Killed']
         self.kill_log = pilot_log['Kill Log']
+
+
+    def addKill(self):
+        self.kills += 1
+        self.kill_log.append(input('Plane downed?:'))
+
+    def addMission(self):
+        self.missions += 1
+
 
 def pilot_nationality_detail(nationality):
     nationality_table = {'american': {2: ['DE, USA', 'MD, USA', 'NJ, USA', 'NY, USA', 'PA, USA', 'VA, USA'],
