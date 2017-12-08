@@ -111,6 +111,16 @@ def pilot_name(nationality):
     return mimesis.Personal(nat).full_name(gender='male')
 
 
+def getsquad():
+    scope = ['https://spreadsheets.google.com/feeds']
+    creds = ServiceAccountCredentials.from_json_keyfile_name('credentials/secret_client.json', scope)
+    client = gspread.authorize(creds)
+    sheet = client.open('Squadron_test').sheet1
+    return sheet.get_all_records()
+
+
+
+
 def main():
     print('Welcome to Dawn Patrol Pilot Roller.\n')
     while True:
@@ -123,6 +133,8 @@ def main():
         if user_input.isalnum():
             if user_input.lower() == main_menu[0].lower() or user_input == '1':
                 print('Fetching Squadron', end='\n\n')
+                squad = getsquad()
+                print('There are ' + str(len(squad)) + ' pilots in the suadron.')
             elif user_input.lower() == main_menu[1].lower() or user_input == '2':
                 print('Saving Squadron', end='\n\n')
             elif user_input.lower() == main_menu[2] or user_input == '3':
