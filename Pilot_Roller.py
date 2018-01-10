@@ -113,7 +113,7 @@ def pilot_name(nationality):
 
 def getsquad():
     scope = ['https://spreadsheets.google.com/feeds']
-    creds = ServiceAccountCredentials.from_json_keyfile_name('credentials/secret_client.json', scope)
+    creds = ServiceAccountCredentials.from_json_keyfile_name('credentials/client_secret.json', scope)
     client = gspread.authorize(creds)
     sheet = client.open('Squadron_test').sheet1
     return sheet.get_all_records()
@@ -144,7 +144,14 @@ def main():
                 nat = input('Pilot Nationality?:')
                 print(pilot_rank(nat) + ' ' + pilot_name(nat) + ' ' + 'from ' + pilot_nationality_detail(nat))
             elif user_input.lower() == main_menu[4] or user_input == '5':
-                print('Showing Current Squadron', end='\n\n')
+                if 'squad' in locals():
+                    print('\nCurrent squadron:')
+                    for i in squad:
+                        print(i['Rank'] + ' '+ i['Name'] + ', M: ' + str(i['Missions']) + ', K: ' + str(i['Kills']))
+                else:
+                    print('\nNo squadron loaded, run \'Fetch Squadron\' command.')
+                print('\n')
+
             elif user_input.lower() == main_menu[5] or user_input == '6':
                 print('Exiting', end='\n\n')
                 exit()
