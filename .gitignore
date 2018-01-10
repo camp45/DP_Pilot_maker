@@ -106,3 +106,10 @@ ENV/
 
 # Auth Files
 client_secret.json
+
+#Credentials
+credentials/
+
+#Windows
+.ini
+
