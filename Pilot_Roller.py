@@ -113,10 +113,27 @@ def pilot_name(nationality):
 
 def getsquad():
     scope = ['https://spreadsheets.google.com/feeds']
-    creds = ServiceAccountCredentials.from_json_keyfile_name('credentials/client_secret.json', scope)
+    creds = ServiceAccountCredentials.from_json_keyfile_name('credentials/secret_client.json', scope)
     client = gspread.authorize(creds)
     sheet = client.open('Squadron_test').sheet1
-    return sheet.get_all_records()
+    return sheet.get_all_records(), sheet.get_all_values()
+
+
+def savesquad(squad):
+    pilots_up = []
+    scope = ['https://spreadsheets.google.com/feeds']
+    creds = ServiceAccountCredentials.from_json_keyfile_name('credentials/secret_client.json', scope)
+    client = gspread.authorize(creds)
+    sheet = client.open('Squadron_test').sheet1
+    size = (sheet.col_count, sheet.row_count)
+
+    for pilots in squad:
+        for i in sheet.get_all_values():
+        if pilots['Pilot ID'] == i[1]:
+
+        pilots_up.append(
+            [i['Status'], i['Pilot ID'], i['Rank'], i['Name'], i['Allegiance'], i['Nationality'], i['Plane Group'],
+             i['Mission'], i['Kills'], i['Date Created'], i['Date Reported Killed'], i['Kill Log']])
 
 
 
@@ -133,7 +150,7 @@ def main():
         if user_input.isalnum():
             if user_input.lower() == main_menu[0].lower() or user_input == '1':
                 print('Fetching Squadron', end='\n\n')
-                squad = getsquad()
+                squad, vals = getsquad()
                 print('There are ' + str(len(squad)) + ' pilots in the suadron.')
             elif user_input.lower() == main_menu[1].lower() or user_input == '2':
                 print('Saving Squadron', end='\n\n')

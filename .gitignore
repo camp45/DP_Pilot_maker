@@ -103,6 +103,7 @@ ENV/
 
 #Pycharm Stuff
 .idea/
+Notes
 
 # Auth Files
 client_secret.json
@@ -112,4 +113,3 @@ credentials/
 
 #Windows
 .ini
-
