@@ -116,10 +116,10 @@ def getsquad():
     creds = ServiceAccountCredentials.from_json_keyfile_name('credentials/secret_client.json', scope)
     client = gspread.authorize(creds)
     sheet = client.open('Squadron_test').sheet1
-    return sheet.get_all_records(), sheet.get_all_values()
+    return sheet.get_all_records()
 
 
-def savesquad(squad):
+def savesquad(pilots):
     pilots_up = []
     scope = ['https://spreadsheets.google.com/feeds']
     creds = ServiceAccountCredentials.from_json_keyfile_name('credentials/secret_client.json', scope)
@@ -127,13 +127,7 @@ def savesquad(squad):
     sheet = client.open('Squadron_test').sheet1
     size = (sheet.col_count, sheet.row_count)
 
-    for pilots in squad:
-        for i in sheet.get_all_values():
-        if pilots['Pilot ID'] == i[1]:
 
-        pilots_up.append(
-            [i['Status'], i['Pilot ID'], i['Rank'], i['Name'], i['Allegiance'], i['Nationality'], i['Plane Group'],
-             i['Mission'], i['Kills'], i['Date Created'], i['Date Reported Killed'], i['Kill Log']])
 
 
 
@@ -150,8 +144,11 @@ def main():
         if user_input.isalnum():
             if user_input.lower() == main_menu[0].lower() or user_input == '1':
                 print('Fetching Squadron', end='\n\n')
-                squad, vals = getsquad()
-                print('There are ' + str(len(squad)) + ' pilots in the suadron.')
+                squad = getsquad()
+                pilots = []
+                for i in squad:
+                    pilots.append(Pilot(i))
+                print('There are ' + str(len(pilots)) + ' pilots in the squadron.')
             elif user_input.lower() == main_menu[1].lower() or user_input == '2':
                 print('Saving Squadron', end='\n\n')
             elif user_input.lower() == main_menu[2] or user_input == '3':
@@ -161,10 +158,10 @@ def main():
                 nat = input('Pilot Nationality?:')
                 print(pilot_rank(nat) + ' ' + pilot_name(nat) + ' ' + 'from ' + pilot_nationality_detail(nat))
             elif user_input.lower() == main_menu[4] or user_input == '5':
-                if 'squad' in locals():
+                if 'pilots' in locals():
                     print('\nCurrent squadron:')
-                    for i in squad:
-                        print(i['Rank'] + ' '+ i['Name'] + ', M: ' + str(i['Missions']) + ', K: ' + str(i['Kills']))
+                    for i in pilots:
+                        print(i.rank + ' ' + i.name + ', M: ' + str(i.missions) + ', K: ' + str(i.kills))
                 else:
                     print('\nNo squadron loaded, run \'Fetch Squadron\' command.')
                 print('\n')
