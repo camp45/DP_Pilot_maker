@@ -125,11 +125,41 @@ def savesquad(pilots):
     creds = ServiceAccountCredentials.from_json_keyfile_name('credentials/secret_client.json', scope)
     client = gspread.authorize(creds)
     sheet = client.open('Squadron_test').sheet1
-    size = (sheet.col_count, sheet.row_count)
-
-
-
-
+    sheet.resize(len(pilots)+1, 12)
+    cell_list = sheet.range('A1:'+ gspread.utils.rowcol_to_a1(len(pilots)+1, 12))
+    header = {1:'Status', 2:'Pilot ID', 3:'Rank', 4:'Name', 5:'Allegiance', 6:'Nationality', 7:'Plane Group',
+              8:'Missions', 9:'Kills', 10:'Date Created', 11:'Date Reported Killed', 12:'Kill Log'}
+    for cell in cell_list:
+        if cell.row == 1:
+            cell.value = header[cell.col]
+        else:
+            for i in pilots:
+                if i.pilot_id == cell.row:
+                    if cell.col == 1:
+                        cell.value = i.status
+                    if cell.col == 2:
+                        cell.value = i.pilot_id
+                    if cell.col == 3:
+                        cell.value = i.rank
+                    if cell.col == 4:
+                        cell.value = i.name
+                    if cell.col == 5:
+                        cell.value = i.allegiance
+                    if cell.col == 6:
+                        cell.value = i.nationality
+                    if cell.col == 7:
+                        cell.value = i.plane_group
+                    if cell.col == 8:
+                        cell.value = i.missions
+                    if cell.col == 9:
+                        cell.value = i.kills
+                    if cell.col == 10:
+                        cell.value = i.date_created
+                    if cell.col == 11:
+                        cell.value = i.date_reported_killed
+                    if cell.col == 12:
+                        cell.value = i.kill_log
+    sheet.update_cells(cell_list)
 
 
 def main():
